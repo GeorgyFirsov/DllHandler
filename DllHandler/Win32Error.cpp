@@ -19,9 +19,11 @@ CWin32Error::CWin32Error( DWORD dwErrorCode )
 
     if(!cchWritten) 
     {
-        DWORD dwLastError = ::GetLastError();
-        std::string sError = "Fatal error: " + std::to_string( dwLastError );
-        throw std::runtime_error( sError );
+        std::wstringstream stream;
+        stream << L"No description available for code 0x"
+               << std::hex
+               << m_dwCode;
+        m_sDescription = stream.str();
     }
 
     m_dwCode = dwErrorCode;
