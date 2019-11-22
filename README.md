@@ -28,6 +28,8 @@ Here is an example:
 
 using PRtlComputeCrc32 = DWORD(__stdcall *)( DWORD, const BYTE*, INT );
 
+// It is a class declaration.
+// This class can be local - it contains no static members
 DLL_BEGIN( CNtLib, L"Ntdll.dll" )
     DLL_FUNCTION( PRtlComputeCrc32, RtlComputeCrc32 )
 DLL_END;
