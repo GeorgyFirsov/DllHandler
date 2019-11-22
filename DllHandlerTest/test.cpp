@@ -81,10 +81,10 @@ TEST(Call, Correctness)
     }
 
     auto pRtlComputeCrc32 = reinterpret_cast<PRtlComputeCrc32>(
-	    ::GetProcAddress( hNtLib, "RtlComputeCrc32" )
-	);
+        ::GetProcAddress( hNtLib, "RtlComputeCrc32" )
+    );
 
-	::FreeLibrary( hNtLib );
+    ::FreeLibrary( hNtLib );
 
     if(!pRtlComputeCrc32) {
         FAILURE;
