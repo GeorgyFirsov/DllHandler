@@ -47,6 +47,25 @@ catch( const CWin32Error& e )
 }
 ```
 
+The main goal is to write code like above (just 5 lines) to call a dll's function instead of this:
+```cpp
+using PRtlComputeCrc32 = DWORD(__stdcall *)( DWORD, const BYTE*, INT );
+
+HMODULE hDll - LoadLibrary( L"Ntdll.dll" );
+if(!hDll) {
+    // Handle error
+}
+
+auto pRtlComputeCrc32 = reinterpret_cast<PRtlComputeCrc32>(
+    GetProcAddress( "RtlComputeCrc32" )
+);
+if(pRtlComputeCrc32) {
+    // Handle error
+}
+
+DWORD dwHash = pRtlComputeCrc32( 0, pData, GetSize( pData ) );
+```
+
 In case of any error during library loading or function search this class (and helper template) generates a `CWin32Error` exception, 
 that contains an error code and its description:
 
