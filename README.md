@@ -57,7 +57,7 @@ if(!hDll) {
 }
 
 auto pRtlComputeCrc32 = reinterpret_cast<PRtlComputeCrc32>(
-    GetProcAddress( "RtlComputeCrc32" )
+    GetProcAddress( hDll, "RtlComputeCrc32" )
 );
 if(pRtlComputeCrc32) {
     // Handle error
