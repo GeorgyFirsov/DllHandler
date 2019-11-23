@@ -33,7 +33,7 @@ CDllHandler::CDllHandler( LPCTSTR szLibraryName, DWORD dwErrorCode )
 
 CDllHandler::~CDllHandler()
 {
-    if (!m_hDll) 
+    if (m_hDll) 
     {
         ::FreeLibrary( m_hDll );
         m_hDll = nullptr;
