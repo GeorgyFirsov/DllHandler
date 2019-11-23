@@ -6,6 +6,12 @@
 
 using PRtlComputeCrc32 = DWORD(__stdcall *)( DWORD, const BYTE*, INT );
 
+constexpr BYTE pbData[] = {
+    'D', 'a', 't', 'a',
+    ' ','t', 'o', ' ',
+    't', 'e', 's', 't'
+};
+
 TEST(Load, Existing)
 {
     try
@@ -55,12 +61,6 @@ TEST(Call, Possibility)
 
 TEST(Call, Correctness)
 {
-    constexpr BYTE pbData[] = {
-        'D', 'a', 't', 'a',
-        ' ','t', 'o', ' ',
-        't', 'e', 's', 't'
-    };
-
     DLL_BEGIN( CNtLib, L"Ntdll.dll" )
         DLL_FUNCTION( PRtlComputeCrc32, RtlComputeCrc32 )
     DLL_END;
@@ -93,4 +93,40 @@ TEST(Call, Correctness)
     DWORD dwExpected = pRtlComputeCrc32( 0, pbData, _countof( pbData ) );
 
     ASSERT_EQ( dwExpected, dwTested );
+}
+
+TEST(Attach, LoadLibrary)
+{
+    CDllHandler hDll = LoadLibrary( L"Ntdll.dll" );
+    if(!hDll) {
+        FAILURE;
+    }
+
+    auto pRtlComputeCrc32 = reinterpret_cast<PRtlComputeCrc32>(
+        GetProcAddress( hDll, "RtlComputeCrc32" )
+    );
+    if(!pRtlComputeCrc32) {
+        FAILURE;
+    }
+
+    ASSERT_NO_THROW( pRtlComputeCrc32( 0, pbData, _countof( pbData ) ) );
+}
+
+TEST(Attach, LoadLibrary_operator)
+{
+    CDllHandler hDll;
+
+    hDll = LoadLibrary( L"Ntdll.dll" );
+    if(!hDll) {
+        FAILURE;
+    }
+
+    auto pRtlComputeCrc32 = reinterpret_cast<PRtlComputeCrc32>(
+        GetProcAddress( hDll, "RtlComputeCrc32" )
+    );
+    if(!pRtlComputeCrc32) {
+        FAILURE;
+    }
+
+    ASSERT_NO_THROW( pRtlComputeCrc32( 0, pbData, _countof( pbData ) ) );
 }

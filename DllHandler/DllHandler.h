@@ -20,18 +20,32 @@
 // These macro can be used to easily declare your own class that
 // will represent dynamic library with specified functions loaded
 // from it.
+// Some constructors and operators are deleted to provide safity
+// from assigning or construction wrong way.
 // ******************************************************************
-#define DLL_BEGIN( _LibClassName, _LibName )    \
-    class _LibClassName: public CDllHandler     \
-    {                                           \
-    public:                                     \
-        _LibClassName()                         \
+#define DLL_BEGIN( _LibClassName, _LibName )            \
+    class _LibClassName: public CDllHandler             \
+    {                                                   \
+    public:                                             \
+        _LibClassName( HANDLE ) = delete;               \
+        _LibClassName( HMODULE ) = delete;              \
+        _LibClassName( LPCTSTR ) = delete;              \
+        _LibClassName( LPCTSTR, DWORD ) = delete;       \
+        _LibClassName& operator=( HANDLE ) = delete;    \
+        _LibClassName& operator=( HMODULE ) = delete;   \
+        _LibClassName()                                 \
             : CDllHandler( _LibName ) { }                
 
 #define DLL_BEGIN_CUSTOM_ERROR( _LibClassName, _LibName, _ErrorCode )   \
     class _LibClassName: public CDllHandler                             \
     {                                                                   \
     public:                                                             \
+        _LibClassName( HANDLE ) = delete;                               \
+        _LibClassName( HMODULE ) = delete;                              \
+        _LibClassName( LPCTSTR ) = delete;                              \
+        _LibClassName( LPCTSTR, DWORD ) = delete;                       \
+        _LibClassName& operator=( HANDLE ) = delete;                    \
+        _LibClassName& operator=( HMODULE ) = delete;                   \
         _LibClassName()                                                 \
             : CDllHandler( _LibName, _ErrorCode ) { }        
 
@@ -58,14 +72,23 @@
 class CDllHandler
 {
 public:
+    CDllHandler();
+
     explicit 
     CDllHandler( LPCTSTR szLibraryName );
     CDllHandler( LPCTSTR szLibraryName, DWORD dwErrorCode );
 
-    ~CDllHandler();
+    CDllHandler( HMODULE hDll );
+    CDllHandler( HANDLE hDll );
+    
+    CDllHandler& operator=( HMODULE hDll );
+    CDllHandler& operator=( HANDLE hDll );
 
-    operator HMODULE() const   { return m_hDll; }
-    operator HANDLE() const    { return m_hDll; }
+    ~CDllHandler() { _Detach(); }
+
+    operator HMODULE() const { return m_hDll; }
+    operator HANDLE() const  { return m_hDll; }
+    operator bool() const    { return m_hDll != nullptr; }
 
     //
     // Restrict copying to prevent null-pointer
@@ -81,6 +104,9 @@ public:
     //
     CDllHandler( CDllHandler&& ) = delete;
     CDllHandler& operator=( CDllHandler&& ) = delete;
+
+private:
+    void _Detach();
 
 protected:
     HMODULE m_hDll;

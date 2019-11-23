@@ -4,6 +4,10 @@
 #include "Win32Error.h"
 
 
+CDllHandler::CDllHandler()
+    : m_hDll( nullptr )
+{ }
+
 CDllHandler::CDllHandler( LPCTSTR szLibraryName )
     : m_hDll( nullptr )
 {
@@ -31,7 +35,33 @@ CDllHandler::CDllHandler( LPCTSTR szLibraryName, DWORD dwErrorCode )
     }
 }
 
-CDllHandler::~CDllHandler()
+CDllHandler::CDllHandler( HMODULE hDll )
+    : m_hDll( hDll )
+{ }
+
+CDllHandler::CDllHandler( HANDLE hDll )
+    : m_hDll( static_cast<HMODULE>( hDll ) )
+{ }
+
+CDllHandler& CDllHandler::operator=( HMODULE hDll )
+{
+    if(m_hDll) {
+        _Detach();
+    }
+    m_hDll = hDll;
+    return *this;
+}
+
+CDllHandler& CDllHandler::operator=( HANDLE hDll )
+{
+    if(m_hDll) {
+        _Detach();
+    }
+    m_hDll = static_cast<HMODULE>( hDll );
+    return *this;
+}
+
+void CDllHandler::_Detach()
 {
     if (m_hDll) 
     {
