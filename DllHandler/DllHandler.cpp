@@ -9,9 +9,8 @@ CDllHandler::CDllHandler()
 { }
 
 CDllHandler::CDllHandler( LPCTSTR szLibraryName )
-    : m_hDll( nullptr )
+    : m_hDll( ::LoadLibrary( szLibraryName ) )
 {
-    m_hDll = ::LoadLibrary( szLibraryName );
     if(!m_hDll)
     {
         //
@@ -22,9 +21,8 @@ CDllHandler::CDllHandler( LPCTSTR szLibraryName )
 }
 
 CDllHandler::CDllHandler( LPCTSTR szLibraryName, DWORD dwErrorCode )
-    : m_hDll( nullptr )
+    : m_hDll( ::LoadLibrary( szLibraryName ) )
 {
-    m_hDll = ::LoadLibrary( szLibraryName );
     if(!m_hDll)
     {
         //
