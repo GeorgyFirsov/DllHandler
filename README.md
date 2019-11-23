@@ -51,7 +51,7 @@ The main goal is to write code like above (just 5 lines) to call a dll's functio
 ```cpp
 using PRtlComputeCrc32 = DWORD(__stdcall *)( DWORD, const BYTE*, INT );
 
-HMODULE hDll - LoadLibrary( L"Ntdll.dll" );
+HMODULE hDll = LoadLibrary( L"Ntdll.dll" );
 if(!hDll) {
     // Handle error
 }
