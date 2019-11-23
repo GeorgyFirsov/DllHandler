@@ -65,6 +65,7 @@ if(pRtlComputeCrc32) {
 
 DWORD dwHash = pRtlComputeCrc32( 0, pData, GetSize( pData ) );
 ```
+This solution is less memory-leak-safe and more complicated to use.
 
 In case of any error during library loading or function search this class (and helper template) generates a `CWin32Error` exception, 
 that contains an error code and its description:
