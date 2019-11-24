@@ -13,7 +13,7 @@ This class has really simple usage:
 ```cpp
 CDllHandler hDll;
 
-hDll = LoadLibraryA( L"Ntdll.dll" );
+hDll = LoadLibraryW( L"Ntdll.dll" );
 
 // Here you can use it as normal HMODULE handle
 
