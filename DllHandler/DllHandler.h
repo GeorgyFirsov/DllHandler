@@ -84,7 +84,7 @@ public:
     CDllHandler& operator=( HMODULE hDll );
     CDllHandler& operator=( HANDLE hDll );
 
-    ~CDllHandler() { _Detach(); }
+    virtual ~CDllHandler() { _Detach(); }
 
     operator HMODULE() const { return m_hDll; }
     operator HANDLE() const  { return m_hDll; }
@@ -105,7 +105,7 @@ public:
     CDllHandler( CDllHandler&& ) = delete;
     CDllHandler& operator=( CDllHandler&& ) = delete;
 
-private:
+protected:
     void _Detach();
 
 protected:
