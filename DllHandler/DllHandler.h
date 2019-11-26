@@ -57,7 +57,7 @@
     TLibraryFunctionInternal<_PfnType> _Name = { m_hDll, #_Name };
 
 #define DLL_FUNCTION_CUSTOM_NAME( _PfnType, _Name, _MemberName )    \
-    TLibraryFunctionInternal<_PfnType> _MemberName = { m_hDll, _Name };
+    TLibraryFunctionInternal<_PfnType> _MemberName = { m_hDll, #_Name };
 
 #define DLL_END    }
 
