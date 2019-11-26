@@ -8,7 +8,7 @@ using PRtlComputeCrc32 = DWORD(__stdcall *)( DWORD, const BYTE*, INT );
 
 constexpr BYTE pbData[] = {
     'D', 'a', 't', 'a',
-    ' ','t', 'o', ' ',
+    ' ', 't', 'o', ' ',
     't', 'e', 's', 't'
 };
 
